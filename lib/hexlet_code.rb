@@ -3,7 +3,7 @@
 require_relative "hexlet_code/version"
 
 module HexletCode
-  PAIRED_TAGS = %w[div].freeze
+  PAIRED_TAGS = %w[div form].freeze
 
   class Error < StandardError; end
 
@@ -40,6 +40,14 @@ module HexletCode
 
     def paired?
       PAIRED_TAGS.include?(@tag) || !@inner_html.empty?
+    end
+  end
+
+  class << self
+    def form_for(object, options = {})
+      url = options.dig(:url)
+      url ||= "#"
+      Tag.build("form", action: url, method: "post")
     end
   end
 end

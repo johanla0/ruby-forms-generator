@@ -44,8 +44,8 @@ module HexletCode
   end
 
   class << self
-    def form_for(object, options = {})
-      url = options.dig(:url)
+    def form_for(_object, options = {})
+      url = options[:url]
       url ||= "#"
       Tag.build("form", action: url, method: "post")
     end

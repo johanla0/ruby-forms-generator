@@ -14,22 +14,22 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_it_builds_unpaired_empty_tag
-    result = ::HexletCode::Tag.build('br')
-    assert_equal '<br>', result
+    result = ::HexletCode::Tag.build("br")
+    assert_equal "<br>", result
   end
 
   def test_it_builds_unpaired_tag_with_attributes
-    result = HexletCode::Tag.build('input', type: 'submit', value: 'Save')
+    result = HexletCode::Tag.build("input", type: "submit", value: "Save")
     assert_equal "<input type=\"submit\" value=\"Save\">", result
   end
 
   def test_it_builds_paired_tag_with_content
-    result = HexletCode::Tag.build('label') { 'Email' }
+    result = HexletCode::Tag.build("label") { "Email" }
     assert_equal "<label>Email</label>", result
   end
 
   def test_it_builds_paired_empty_tag
-    result = HexletCode::Tag.build('div')
+    result = HexletCode::Tag.build("div")
     assert_equal "<div></div>", result
   end
 
@@ -40,7 +40,7 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_it_builds_form_tag_with_url
-    result = HexletCode.form_for @user, url: '/users' do |f|
+    result = HexletCode.form_for @user, url: "/users" do |f|
     end
     assert_equal "<form action=\"/users\" method=\"post\"></form>", result
   end

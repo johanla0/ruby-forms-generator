@@ -14,7 +14,6 @@ module HexletCode
       @tag = tag
       @attrs = attrs
       @inner_html = block_given? ? block.call : ""
-      to_s
     end
 
     def to_s
@@ -44,12 +43,13 @@ module HexletCode
   end
 
   class Form
-    attr_accessor :action, :method, :tags, :object
+    attr_accessor :action, :method, :tags, :attrs, :object
 
-    def initialize(object, options, &block)
+    def initialize(object, attrs = {}, &block)
       @object = object
-      @action = options[:url] || "#"
-      @method = options[:method] || "post"
+      @action = attrs.delete(:url) || "#"
+      @method = attrs.delete(:method) || "post"
+      @attrs = attrs
       @tags = []
 
       block.call(self) if block_given?
@@ -60,20 +60,20 @@ module HexletCode
       as = options.delete(:as)
       has_label = options.delete(:label)
 
-      @tags << Tag.build("label", { for: key }) { key.to_s.capitalize } if has_label.nil?
+      @tags << Tag.new("label", { for: key }) { key.to_s.capitalize } if has_label.nil?
       @tags << if !as.nil? && as.to_sym == :text
-                 Tag.build("textarea", { name: key }.merge(options)) { value }
+                 Tag.new("textarea", { name: key }.merge(options)) { value }
                else
-                 Tag.build("input", { name: key, type: "text", value: }.merge(options))
+                 Tag.new("input", { name: key, type: "text", value: }.merge(options))
                end
     end
 
     def submit(value = "Save")
-      @tags << Tag.build("input", { type: "submit", value: })
+      @tags << Tag.new("input", { type: "submit", value: })
     end
 
     def to_s
-      Tag.build("form", action: @action, method: @method) { @tags.join }
+      Tag.build("form", { action: @action, method: @method }.merge(@attrs)) { @tags.map(&:to_s).join }
     end
   end
 

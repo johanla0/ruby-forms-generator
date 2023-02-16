@@ -46,11 +46,10 @@ module HexletCode
   class Form
     attr_accessor :action, :method, :tags, :object
 
-    def initialize(object, action, &block)
-      action ||= "#"
+    def initialize(object, options, &block)
       @object = object
-      @action = action
-      @method = "post"
+      @action = options[:url] || "#"
+      @method = options[:method] || "post"
       @tags = []
 
       block.call(self) if block_given?
@@ -80,7 +79,7 @@ module HexletCode
 
   class << self
     def form_for(object, options = {}, &)
-      form = Form.new(object, options[:url], &)
+      form = Form.new(object, options, &)
       form.to_s
     end
   end

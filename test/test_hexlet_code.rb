@@ -41,10 +41,10 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_it_builds_form_tag_method_get
-    result = HexletCode.form_for @user, method: "get" do |f|
+    result = HexletCode.form_for @user, method: "get", class: "test-class" do |f|
       f.input :name
     end
-    assert_equal "<form action=\"#\" method=\"get\"><label for=\"name\">Name</label><input name=\"name\" type=\"text\" value=\"rob\"></form>", result
+    assert_equal "<form action=\"#\" method=\"get\" class=\"test-class\"><label for=\"name\">Name</label><input name=\"name\" type=\"text\" value=\"rob\"></form>", result
   end
 
   def test_it_builds_form_tag_without_label

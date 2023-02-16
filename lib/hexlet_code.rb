@@ -58,13 +58,19 @@ module HexletCode
 
     def input(key, options = {})
       value = @object.public_send(key)
-      as = options[:as]
+      as = options.delete(:as)
+      has_label = options.delete(:label)
 
+      @tags << Tag.build("label", { for: key }) { key.to_s.capitalize } if has_label.nil?
       @tags << if !as.nil? && as.to_sym == :text
-                 Tag.build("textarea", { name: key }.merge(options.except(:as))) { value }
+                 Tag.build("textarea", { name: key }.merge(options)) { value }
                else
-                 Tag.build("input", { name: key, type: "text", value: }.merge(options.except(:as)))
+                 Tag.build("input", { name: key, type: "text", value: }.merge(options))
                end
+    end
+
+    def submit(value = "Save")
+      @tags << Tag.build("input", { type: "submit", value: })
     end
 
     def to_s

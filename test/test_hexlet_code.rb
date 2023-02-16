@@ -37,8 +37,8 @@ class TestHexletCode < Minitest::Test
     result = HexletCode.form_for @user do |f|
       f.input :name
     end
-    assert_equal '<form action="#" method="post">'\
-                 '<label for="name">Name</label><input name="name" type="text" value="rob">'\
+    assert_equal '<form action="#" method="post">' \
+                 '<label for="name">Name</label><input name="name" type="text" value="rob">' \
                  '</form>',
                  result
   end
@@ -47,8 +47,8 @@ class TestHexletCode < Minitest::Test
     result = HexletCode.form_for @user, method: 'get', class: 'test-class' do |f|
       f.input :name
     end
-    assert_equal '<form action="#" method="get" class="test-class">'\
-                 '<label for="name">Name</label><input name="name" type="text" value="rob">'\
+    assert_equal '<form action="#" method="get" class="test-class">' \
+                 '<label for="name">Name</label><input name="name" type="text" value="rob">' \
                  '</form>',
                  result
   end
@@ -66,8 +66,8 @@ class TestHexletCode < Minitest::Test
       f.input :name, label: false
       f.submit
     end
-    assert_equal '<form action="#" method="post">'\
-                 '<input name="name" type="text" value="rob"><input type="submit" value="Save">'\
+    assert_equal '<form action="#" method="post">' \
+                 '<input name="name" type="text" value="rob"><input type="submit" value="Save">' \
                  '</form>',
                  result
   end
@@ -76,8 +76,8 @@ class TestHexletCode < Minitest::Test
     result = HexletCode.form_for @user, url: '/users' do |f|
       f.input :job, as: :text, rows: 50, cols: 50, label: false
     end
-    assert_equal '<form action="/users" method="post">'\
-                 '<textarea name="job" rows="50" cols="50">hexlet</textarea>'\
+    assert_equal '<form action="/users" method="post">' \
+                 '<textarea name="job" rows="50" cols="50">hexlet</textarea>' \
                  '</form>',
                  result
   end

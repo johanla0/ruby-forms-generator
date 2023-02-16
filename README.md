@@ -15,7 +15,27 @@ Install the gem and add to the application's Gemfile by executing:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+User = Struct.new(:name, :job, :gender, keyword_init: true)
+user = User.new name: 'rob', job: 'developer', gender: 'm'
+
+HexletCode.form_for user, url: "/users" do |f|
+  f.input :name, class: "user-input"
+  f.input :job, as: :text, rows: 50, cols: 50
+  f.submit
+end
+```
+
+Returns:
+
+```
+<form action="/users" method="post">
+    <input name="name" type="text" value="rob" class="user-input">
+    <textarea name="job" rows="50" cols="50">developer</textarea>
+    <input type="submit" value="Save">
+</form>
+
+```
 
 ## Development
 

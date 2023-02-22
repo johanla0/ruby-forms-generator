@@ -36,8 +36,6 @@ class Tag
   end
 
   def inner_html
-    return @children if @children.is_a? String
-
     @children.any? ? @children.join : ''
   end
 
@@ -47,7 +45,7 @@ class Tag
     if block_result.is_a? Tag
       @children << block_result
     else
-      @children = block_result
+      @children = [block_result]
     end
   end
 end

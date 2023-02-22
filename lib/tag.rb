@@ -38,7 +38,7 @@ class Tag
   def inner_html
     return @children if @children.is_a? String
 
-    @children.present? ? @children.join : ''
+    @children.any? ? @children.join : ''
   end
 
   def add_children(obj, &block)

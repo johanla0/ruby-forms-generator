@@ -2,21 +2,15 @@
 
 require 'test_helper'
 
-User = Struct.new(:name, :job, :gender, keyword_init: true)
-
-class TestHexletCode < Minitest::Test
+class TestForm < Minitest::Test
   def setup
     @user = User.new name: 'rob', job: 'hexlet', gender: 'm'
   end
 
-  def test_it_has_a_version_number
-    refute_nil ::HexletCode::VERSION
-  end
-
   def test_it_builds_form_tag
-    result = ::HexletCode.form_for @user do |f|
+    result = Form.new @user do |f|
       f.input :name
-    end
+    end.to_s
     assert_equal '<form action="#" method="post">' \
                  '<label for="name">Name</label><input name="name" type="text" value="rob">' \
                  '</form>',
@@ -24,9 +18,9 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_it_builds_form_tag_method_get
-    result = ::HexletCode.form_for @user, method: 'get', class: 'test-class' do |f|
+    result = Form.new @user, method: 'get', class: 'test-class' do |f|
       f.input :name
-    end
+    end.to_s
     assert_equal '<form action="#" method="get" class="test-class">' \
                  '<label for="name">Name</label><input name="name" type="text" value="rob">' \
                  '</form>',
@@ -34,18 +28,18 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_it_builds_form_tag_without_label
-    result = ::HexletCode.form_for @user do |f|
+    result = Form.new @user do |f|
       f.input :name, class: 'user-input', label: false
-    end
+    end.to_s
     assert_equal '<form action="#" method="post"><input name="name" type="text" value="rob" class="user-input"></form>',
                  result
   end
 
   def test_it_builds_form_tag_with_submit
-    result = ::HexletCode.form_for @user do |f|
+    result = Form.new @user do |f|
       f.input :name, label: false
       f.submit
-    end
+    end.to_s
     assert_equal '<form action="#" method="post">' \
                  '<input name="name" type="text" value="rob"><input type="submit" value="Save">' \
                  '</form>',
@@ -53,9 +47,9 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_it_builds_form_tag_with_url
-    result = ::HexletCode.form_for @user, url: '/users' do |f|
+    result = Form.new @user, url: '/users' do |f|
       f.input :job, as: :text, rows: 50, cols: 50, label: false
-    end
+    end.to_s
     assert_equal '<form action="/users" method="post">' \
                  '<textarea name="job" rows="50" cols="50">hexlet</textarea>' \
                  '</form>',
@@ -64,7 +58,7 @@ class TestHexletCode < Minitest::Test
 
   def test_it_throws_undefined_method
     assert_raises NoMethodError do
-      ::HexletCode.form_for @user, url: '/users' do |f|
+      Form.new @user, url: '/users' do |f|
         f.input :name
         f.input :age
       end

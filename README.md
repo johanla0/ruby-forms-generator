@@ -1,7 +1,9 @@
 # HexletCode
 
-## Hexlet tests and linter status:
+## Tests and linter status:
 [![Actions Status](https://github.com/johanla0/rails-project-63/workflows/hexlet-check/badge.svg)](https://github.com/johanla0/rails-project-63/actions)
+
+[![Main](https://github.com/johanla0/rails-project-63/actions/workflows/main.yml/badge.svg)](https://github.com/johanla0/rails-project-63/actions/workflows/main.yml)
 
 ## What is it
 

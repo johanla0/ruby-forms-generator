@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# autoload :Input, "#{PATH}/hexlet_code/input"
-
-require_relative './input'
+HexletCode.autoload :Input, 'hexlet_code/input.rb'
 
 module HexletCode
   class Form
@@ -20,14 +18,14 @@ module HexletCode
       value = @object.public_send(key)
 
       @fields << if options[:as]&.to_sym == :text
-                   Input.new(:textarea, { name: key, value: }.merge(options))
+                   HexletCode::Input.new(:textarea, { name: key, value: }.merge(options))
                  else
-                   Input.new(:input, { name: key, type: 'text', value: }.merge(options))
+                   HexletCode::Input.new(:input, { name: key, type: 'text', value: }.merge(options))
                  end
     end
 
     def submit(value = 'Save')
-      @fields << Input.new(:input, { type: 'submit', value:, label: false })
+      @fields << HexletCode::Input.new(:input, { type: 'submit', value:, label: false })
     end
   end
 end

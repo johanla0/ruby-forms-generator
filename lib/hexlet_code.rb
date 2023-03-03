@@ -1,27 +1,24 @@
 # frozen_string_literal: true
 
-PATH = File.expand_path('.', __dir__)
-autoload :HexletCode, "#{PATH}/hexlet_code/version"
-# autoload :Form, "#{PATH}/hexlet_code/form"
-# autoload :Tag, "#{PATH}/hexlet_code/tag"
+require_relative './hexlet_code/version'
 
-require_relative './hexlet_code/form'
-require_relative './hexlet_code/tag'
+HexletCode.autoload :Form, 'hexlet_code/form.rb'
+HexletCode.autoload :Tag, 'hexlet_code/tag.rb'
 
 module HexletCode
   class << self
     def form_for(object, options = {}, &)
-      form = Form.new(object, options, &)
+      form = HexletCode::Form.new(object, options, &)
       content = form.fields.map { |field| get_tag(field) }
-      Tag.new(:form, form.attrs) { content.join }.to_s
+      HexletCode::Tag.new(:form, form.attrs) { content.join }.to_s
     end
 
     private
 
     def get_tag(field)
       tags = []
-      tags << Tag.new(:label, { for: field.attrs[:name] }) if field.attrs.fetch(:label, true)
-      tags << Tag.new(field.type, field.attrs)
+      tags << HexletCode::Tag.new(:label, { for: field.attrs[:name] }) if field.attrs.fetch(:label, true)
+      tags << HexletCode::Tag.new(field.type, field.attrs)
       tags.map(&:to_s).join
     end
   end

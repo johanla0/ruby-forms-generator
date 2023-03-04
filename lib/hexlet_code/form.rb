@@ -20,9 +20,5 @@ module HexletCode
     def submit(value = 'Save', options = {})
       @fields << { type: 'submit', value:, label: false }.merge(options)
     end
-
-    def to_s
-      raise NotImplementedError
-    end
   end
 end

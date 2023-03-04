@@ -2,65 +2,24 @@
 
 module HexletCode
   class Tag
-    VOID_TAGS = %i[area base br col command embed hr img input keygen link meta param source track wbr].freeze
-
-    attr_accessor :tag_name, :attrs, :inner_html
-
-    def initialize(tag_name, attrs = {}, &)
-      @tag_name = tag_name
-      @attrs = prepare_attributes(attrs)
-      @inner_html = prepare_inner_html(attrs, &)
-    end
-
-    def to_s
-      return "<#{@tag_name}#{attrs_html}>" if void_tag?
-
-      "<#{@tag_name}#{attrs_html}>#{@inner_html}</#{@tag_name}>"
-    end
-
-    alias to_html to_s
+    VOID_TAGS = %w[area base br col command embed hr img input keygen link meta param source track wbr].freeze
 
     class << self
-      def build(tag_name, attrs = {}, &)
-        new(tag_name, attrs, &).to_s
+      def build(tag_name, attrs = {}, &block)
+        return "<#{tag_name}#{attrs_html(attrs)}>" if void_tag?(tag_name)
+
+        inner_html = block_given? ? block.call : ''
+        "<#{tag_name}#{attrs_html(attrs)}>#{inner_html}</#{tag_name}>"
       end
-    end
 
-    private
+      private
 
-    def void_tag?
-      VOID_TAGS.include?(@tag_name)
-    end
-
-    def attrs_html
-      @attrs.each.map { |k, v| " #{k}=\"#{v}\"" }.join
-    end
-
-    def prepare_attributes(attrs)
-      case @tag_name
-      when :form
-        action = attrs.fetch(:url, '#')
-        method = attrs.fetch(:method, 'post')
-        { action:, method: }.merge(attrs.except(:url, :method))
-      when :textarea
-        attrs.except(:label, :as, :value)
-      when :label
-        attrs.except(:name)
-      else
-        attrs.except(:label, :as)
+      def void_tag?(tag_name)
+        VOID_TAGS.include?(tag_name)
       end
-    end
 
-    def prepare_inner_html(attrs, &block)
-      return block.call if block_given?
-
-      case @tag_name
-      when :textarea
-        attrs.fetch(:value, '')
-      when :label
-        attrs.fetch(:for, '').to_s.capitalize
-      else
-        ''
+      def attrs_html(attrs)
+        attrs.each.map { |k, v| " #{k}=\"#{v}\"" }.join
       end
     end
   end

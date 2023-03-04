@@ -11,3 +11,6 @@ Metrics/MethodLength:
 
 Style/AsciiComments:
   Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false

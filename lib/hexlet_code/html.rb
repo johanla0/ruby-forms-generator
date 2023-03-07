@@ -20,27 +20,19 @@ module HexletCode
         html_options = attrs.except(:name, :label, :as, :value)
 
         tags = []
-        tags << get_label(attrs, html_options)
+        tags << get_label(attrs)
         tags << get_input(attrs, html_options)
         tags.join
       end
 
-      def get_label(attrs, html_options = {})
-        has_label = attrs.fetch(:label, true)
-        return unless has_label
-
-        name = attrs[:name]
-        HexletCode::Tag.build('label', { for: name }.merge(html_options)) { name.capitalize }
+      def get_label(attrs)
+        HexletCode::Label.build(attrs)
       end
 
       def get_input(attrs, html_options = {})
-        name = attrs[:name]
-        type = attrs.fetch(:type, 'text')
-        value = attrs.fetch(:value, '')
-        is_textarea = attrs[:as]&.to_sym == :text
-        return HexletCode::Tag.build('textarea', { name: }.merge(html_options)) { value } if is_textarea
-
-        HexletCode::Tag.build('input', { name:, type:, value: }.merge(html_options).compact)
+        as = attrs.fetch(:as, :input).capitalize
+        klass = HexletCode.const_get(as)
+        klass.build(attrs, html_options)
       end
     end
   end
